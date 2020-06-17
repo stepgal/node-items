@@ -8,7 +8,7 @@ const defaultConfigs = {
 };
 
 const elasticItemsClient = new ES.Client({
-    hosts: process.env.ELASTIC_ITEMS_HOST,
+    hosts: "http://18.222.24.29:9200",
     ...defaultConfigs
 });
 
