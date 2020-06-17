@@ -21,8 +21,6 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "eslint": "3.15.0",
-    "eslint-plugin-security": "1.4.0",
-    "superagent": "3.1.0"
+    "eslint-plugin-security": "1.4.0"
   }
 }
