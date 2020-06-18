@@ -6,6 +6,8 @@ const path = require("path");
 require("dns");
 require("dnscache")({ "enable": true, "ttl": 300, "cachesize": 1000 });
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 
 const { itemDelete, getItemsAll, getItemsByUserId, setItemByUserId } = require("./mongoServer");
 
@@ -14,6 +16,9 @@ const app = express();
 if (process.env.NODE_ENV === "DEVELOPMENT") {
     app.use(morgan("dev"));
 }
+
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec, false, { docExpansion: "none" }));
+
 async function addElasticSearchItem (id, title, description) {
     const elasticConnection = elasticItemsConnection;
     const isExists = await elasticConnection.client.indices.exists({ index: process.env.ELASTIC_ITEMS_INDEX });
@@ -54,28 +59,106 @@ async function deleteElasticSearchItem (id) {
         logger.log("error", error);
     });
 }
+
+/**
+ * @swagger
+ * /items/insert/{userId}/{title}/{description}/{cost}:
+ *   get:
+ *     tags:
+ *       - Add/Delete Item
+ *     summary: Add New Item
+ *     description: 'Adding new item to database'
+ *     operationId: getSystemData
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         schema:
+ *            $ref: '#/definitions/response'
+ *
+ *       '400':
+ *         description: Missed Parameter(s)
+ *         schema:
+ *            $ref: '#/definitions/responseError'
+ */
 app.get("/items/insert/:userId/:title/:description/:cost", async (req, res) => {
     const { userId, title, description, cost } = req.params;
-    if (!userId) return res.status(400).send();
+    if (!userId || title || !description || !cost)
+        return res.status(400).json(
+        {
+            "status": "FAILED",
+            "message": "Missed Parameter(s)"
+        }).send();
     const item = await setItemByUserId(userId, title, description, cost);
     await addElasticSearchItem(item._id, title, description);
-    return res.json(
+    return res.status(200).json(
         {
             "status": "OK",
             item: item || []
         });
 });
 
+/**
+ * @swagger
+ * /items/delete/{itemId}:
+ *   get:
+ *     tags:
+ *       - Add/Delete Item
+ *     summary: Delete Item
+ *     description: 'Delete item from database'
+ *     operationId: getSystemData
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *
+ *       '400':
+ *         description: Missed Parameter(s)
+ *         schema:
+ *            $ref: '#/definitions/responseError'
+ */
 app.get("/items/delete/:itemId", async (req, res) => {
     const { itemId } = req.params;
-    if (!itemId) return res.status(400).send();
+    if (!itemId)
+        return res.status(400).json(
+            {
+                "status": "FAILED",
+                "message": "Missed Parameter"
+            }).send();
     await itemDelete(itemId);
     await deleteElasticSearchItem(itemId);
     return res.json(
         {
-            "status": "OK"
+            "status": "OK",
+            "message": "Item deleted"
         });
 });
+
+/**
+ * @swagger
+ * /items/all:
+ *   get:
+ *     tags:
+ *       - Get Items
+ *     summary: Get All Items
+ *     description: 'Return all items from database'
+ *     operationId: getSystemData
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         schema:
+ *            $ref: '#/definitions/response'
+ */
 app.get("/items/all", async (req, res) => {
     const items = await getItemsAll();
     return res.json(
@@ -84,26 +167,66 @@ app.get("/items/all", async (req, res) => {
             items: items || []
         });
 });
+
+/**
+ * @swagger
+ * /items/{itemId}:
+ *   get:
+ *     tags:
+ *       - Get Items
+ *     summary: Get Items by userId
+ *     description: 'Get Items by userId from database'
+ *     operationId: getSystemData
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         schema:
+ *            $ref: '#/definitions/response'
+ *
+ *       '400':
+ *         description: Missed Parameter(s)
+ *         schema:
+ *            $ref: '#/definitions/responseError'
+ */
 app.get("/items/:userId", async (req, res) => {
     const { userId } = req.params;
-    if (!userId) return res.status(400).send();
+    if (!userId)
+        return res.status(400).json(
+        {
+            "status": "FAILED",
+            "message": "Missed Parameter"
+        }).send();
 
     const items = await getItemsByUserId(userId);
-    if (items) {
-        return res.json(
-            {
-                "status": "OK",
-                items: items || []
-            });
-    }
-
-    res.json(
+    return res.json(
         {
             "status": "OK",
-            items: []
+            items: items || []
         });
 });
-
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     tags:
+ *       - Bad URL
+ *     summary: Bad URL
+ *     description: 'Wrong URL'
+ *     operationId: getSystemData
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '404':
+ *         description: Wrong URL
+ *         schema:
+ *            $ref: '#/definitions/responseError'
+ */
 app.use("/", async (req, res) => {
     res.status(404).send({
         "message": "Bad request"

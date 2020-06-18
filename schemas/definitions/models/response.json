@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "properties": {
+        "status": {
+            "type": "string",
+            "examples": [
+                "OK"
+            ]
+        },
+        "item": {
+            "type" : "object",
+            "$ref" : "#/definitions/item"
+        }
+    },
+    "required": [ "status" ]
+}

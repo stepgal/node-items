@@ -1,0 +1,36 @@
+{
+    "type": "object",
+    "properties": {
+        "_id": {
+            "type": "string",
+            "examples": [
+                "5eeaa70c8775b9261eafa43b"
+            ]
+        },
+        "userId": {
+            "type": "string",
+            "examples": [
+                "6eeaa90c8775b9261eafa31a"
+            ]
+        },
+        "title": {
+            "type": "string",
+            "examples": [
+                "Item Title"
+            ]
+        },
+        "description": {
+            "type": "string",
+            "examples": [
+                "Item Description"
+            ]
+        },
+        "cost": {
+            "type": "float",
+            "examples": [
+                "3.99"
+            ]
+        }
+    },
+    "required": [ "userId", "title", "description", "cost" ]
+}

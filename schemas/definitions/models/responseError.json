@@ -1,0 +1,18 @@
+{
+    "type": "object",
+    "properties": {
+        "status": {
+            "type": "string",
+            "examples": [
+                "FAILURE"
+            ]
+        },
+        "message": {
+            "type": "string",
+            "examples": [
+                "Missed Parameter(s)"
+            ]
+        }
+    },
+    "required": [ "status", "message" ]
+}
