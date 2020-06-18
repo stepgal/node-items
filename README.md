@@ -4,7 +4,7 @@
 
 ### Documentation
 
-Documentation will be served at `/swagger` [API Docs](ec2-3-15-18-44.us-east-2.compute.amazonaws.com:3002/swagger). It is suggested to check it if you want to execute any request since it contains a **Try Out** option, which is much more comfortable than using other tools such as Postman.
+Documentation will be served at `/swagger` [API Docs](http://ec2-3-15-18-44.us-east-2.compute.amazonaws.com:3002/swagger). It is suggested to check it if you want to execute any request since it contains a **Try Out** option, which is much more comfortable than using other tools such as Postman.
 
 ### Installing node
 
@@ -55,7 +55,7 @@ ELASTIC_ITEMS_TYPE=_doc
 
 ### AWS
 
-This app was deployed using [AWS](https://aws.amazon.com/). The base url is [ec2-3-15-18-44.us-east-2.compute.amazonaws.com:3002/](ec2-3-15-18-44.us-east-2.compute.amazonaws.com:3002/).
+This app was deployed using [AWS](https://aws.amazon.com/). The base url is [http://ec2-3-15-18-44.us-east-2.compute.amazonaws.com:3002](http://ec2-3-15-18-44.us-east-2.compute.amazonaws.com:3002).
 
 ## About
 
