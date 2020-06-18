@@ -185,7 +185,7 @@ app.get("/items/all", async (req, res) => {
 
 /**
  * @swagger
- * /items/{itemId}:
+ * /items/{userId}:
  *   get:
  *     tags:
  *       - Get Items
