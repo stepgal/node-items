@@ -83,6 +83,11 @@ async function deleteElasticSearchItem (id) {
  *         description: Missed Parameter(s)
  *         schema:
  *            $ref: '#/definitions/responseError'
+ *
+ *       '404':
+ *         description: Wrong URL
+ *         schema:
+ *            $ref: '#/definitions/responseError'
  */
 app.get("/items/insert/:userId/:title/:description/:cost", async (req, res) => {
     const { userId, title, description, cost } = req.params;
@@ -122,6 +127,11 @@ app.get("/items/insert/:userId/:title/:description/:cost", async (req, res) => {
  *         description: Missed Parameter(s)
  *         schema:
  *            $ref: '#/definitions/responseError'
+ *
+ *       '404':
+ *         description: Wrong URL
+ *         schema:
+ *            $ref: '#/definitions/responseError'
  */
 app.get("/items/delete/:itemId", async (req, res) => {
     const { itemId } = req.params;
@@ -158,6 +168,11 @@ app.get("/items/delete/:itemId", async (req, res) => {
  *         description: Successful operation
  *         schema:
  *            $ref: '#/definitions/response'
+ *
+ *       '404':
+ *         description: Wrong URL
+ *         schema:
+ *            $ref: '#/definitions/responseError'
  */
 app.get("/items/all", async (req, res) => {
     const items = await getItemsAll();
@@ -191,6 +206,11 @@ app.get("/items/all", async (req, res) => {
  *         description: Missed Parameter(s)
  *         schema:
  *            $ref: '#/definitions/responseError'
+ *
+ *       '404':
+ *         description: Wrong URL
+ *         schema:
+ *            $ref: '#/definitions/responseError'
  */
 app.get("/items/:userId", async (req, res) => {
     const { userId } = req.params;
@@ -208,25 +228,7 @@ app.get("/items/:userId", async (req, res) => {
             items: items || []
         });
 });
-/**
- * @swagger
- * /:
- *   get:
- *     tags:
- *       - Bad URL
- *     summary: Bad URL
- *     description: 'Wrong URL'
- *     operationId: getSystemData
- *     consumes:
- *       - application/json
- *     produces:
- *       - application/json
- *     responses:
- *       '404':
- *         description: Wrong URL
- *         schema:
- *            $ref: '#/definitions/responseError'
- */
+
 app.use("/", async (req, res) => {
     res.status(404).send({
         "message": "Bad request"
