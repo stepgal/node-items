@@ -91,7 +91,7 @@ async function deleteElasticSearchItem (id) {
  */
 app.get("/items/insert/:userId/:title/:description/:cost", async (req, res) => {
     const { userId, title, description, cost } = req.params;
-    if (!userId || title || !description || !cost)
+    if (!userId)
         return res.status(400).json(
         {
             "status": "FAILED",
