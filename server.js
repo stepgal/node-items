@@ -79,11 +79,6 @@ async function deleteElasticSearchItem (id) {
  *         schema:
  *            $ref: '#/definitions/response'
  *
- *       '400':
- *         description: Missed Parameter(s)
- *         schema:
- *            $ref: '#/definitions/responseError'
- *
  *       '404':
  *         description: Wrong URL
  *         schema:
@@ -92,7 +87,7 @@ async function deleteElasticSearchItem (id) {
 app.get("/items/insert/:userId/:title/:description/:cost", async (req, res) => {
     const { userId, title, description, cost } = req.params;
     if (!userId)
-        return res.status(400).json(
+        return res.status(404).json(
         {
             "status": "FAILED",
             "message": "Missed Parameter(s)"
@@ -136,7 +131,7 @@ app.get("/items/insert/:userId/:title/:description/:cost", async (req, res) => {
 app.get("/items/delete/:itemId", async (req, res) => {
     const { itemId } = req.params;
     if (!itemId)
-        return res.status(400).json(
+        return res.status(404).json(
             {
                 "status": "FAILED",
                 "message": "Missed Parameter"
@@ -202,11 +197,6 @@ app.get("/items/all", async (req, res) => {
  *         schema:
  *            $ref: '#/definitions/response'
  *
- *       '400':
- *         description: Missed Parameter(s)
- *         schema:
- *            $ref: '#/definitions/responseError'
- *
  *       '404':
  *         description: Wrong URL
  *         schema:
@@ -215,7 +205,7 @@ app.get("/items/all", async (req, res) => {
 app.get("/items/:userId", async (req, res) => {
     const { userId } = req.params;
     if (!userId)
-        return res.status(400).json(
+        return res.status(404).json(
         {
             "status": "FAILED",
             "message": "Missed Parameter"

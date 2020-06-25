@@ -7,7 +7,7 @@ module.exports = {
                 version: "1.0.0",
                 title: "SHOP2020 API",
                 contact: {
-                    email: "step.ga;.2020@gmail.com"
+                    email: "step.gal.2020@gmail.com"
                 }
             },
             host: this.HOST,

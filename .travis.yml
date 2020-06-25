@@ -1,0 +1,24 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -f dockerfile.dev -t sgaloyan/node_items_dev .
+
+script:
+  - docker run sgaloyan/node_items_dev
+
+after_success:
+  - docker stop container sgaloyan/node_items_dev
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: $ACCESS_KEY
+  secret_access_key: $SECRET_ACCESS_KEY
+  region: us-east-2
+  app: "node-items-docker"
+  env: "NodeItemsDocker-env"
+  bucket_name: "s3-node-items-docker"
+  on: master
+
