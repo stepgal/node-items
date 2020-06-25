@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/stepgal/node-items.svg?branch=master)](https://travis-ci.com/stepgal/node-items)
+
 # Get / Insert / Add Items API
 
 ## Getting Started
