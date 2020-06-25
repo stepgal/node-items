@@ -163,15 +163,10 @@ app.get("/items/delete/:itemId", async (req, res) => {
  *         description: Successful operation
  *         schema:
  *            $ref: '#/definitions/response'
- *
- *       '404':
- *         description: Wrong URL
- *         schema:
- *            $ref: '#/definitions/responseError'
  */
 app.get("/items/all", async (req, res) => {
     const items = await getItemsAll();
-    return res.json(
+    return res.status(200).json(
         {
             "status": "OK",
             items: items || []
@@ -226,3 +221,5 @@ app.use("/", async (req, res) => {
 });
 
 app.listen(process.env.SERVER_PORT || 3002);
+
+module.exports = app;

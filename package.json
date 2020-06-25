@@ -4,7 +4,8 @@
   "description": "Get/Delete token API",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "mocha ./tests --recursive --timeout 15000 --no-deprecation --exit"
   },
   "author": "Stepan Galoyan",
   "license": "ISC",
